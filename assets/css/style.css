@@ -1,0 +1,173 @@
+body
+{
+    padding-top: 56px;
+}
+
+
+
+.bg-image-full
+{
+    background: no-repeat center center scroll;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    background-size: cover;
+    -o-background-size: cover;
+}
+
+
+.logo-img
+{
+    width: 15%;
+    height: auto;
+}
+
+
+.entry:not(:first-of-type)
+{
+    margin-top: 10px;
+}
+
+
+.image-parent {
+    max-width: 22px;
+}
+
+
+.group
+{
+    background-color: #f1f1f1;
+    border-radius: 10px;
+    padding: 10px;
+    margin: 20px;
+}
+
+.teams-list
+{
+    background-color: #b4b4b4;
+    border-radius: 10px;
+    padding: 1px;
+    margin-bottom: 30px;
+}
+
+.flag-standings-table
+{
+    max-width: 22px;
+    margin-right: 8px;
+    margin-bottom:1px;
+}
+
+#generateMatchsButtonWrapper
+{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+
+/* hide input="number" arrows */
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button
+{
+    -webkit-appearance: none;
+    margin: 0;
+}
+/* Firefox */
+input[type=number] {
+    -moz-appearance: textfield;
+}
+
+
+
+/*
+███████ ████████  █████  ███    ██ ██████  ██ ███    ██  ██████  ███████     ████████  █████  ██████  ██      ███████
+██         ██    ██   ██ ████   ██ ██   ██ ██ ████   ██ ██       ██             ██    ██   ██ ██   ██ ██      ██
+███████    ██    ███████ ██ ██  ██ ██   ██ ██ ██ ██  ██ ██   ███ ███████        ██    ███████ ██████  ██      █████
+     ██    ██    ██   ██ ██  ██ ██ ██   ██ ██ ██  ██ ██ ██    ██      ██        ██    ██   ██ ██   ██ ██      ██
+███████    ██    ██   ██ ██   ████ ██████  ██ ██   ████  ██████  ███████        ██    ██   ██ ██████  ███████ ███████
+*/
+
+
+
+table {
+    border: 1px solid #ccc;
+    border-collapse: collapse;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    /* table-layout: fixed; */
+}
+
+/* table caption {
+  font-size: 1.5em;
+  margin: .5em 0 .75em;
+} */
+
+table tr {
+    background-color: #b4b4b4;
+    border: 1px solid #939393;
+    padding: .35em;
+}
+
+table th,
+table td {
+    padding: .625em;
+    text-align: center;
+}
+
+table th {
+    font-size: .85em;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+
+}
+
+@media screen and (max-width: 600px) {
+    table {
+        border: 0;
+    }
+
+    table caption {
+        font-size: 1.3em;
+    }
+
+    table thead {
+        border: none;
+        clip: rect(0 0 0 0);
+        height: 1px;
+        margin: -1px;
+        overflow: hidden;
+        padding: 0;
+        position: absolute;
+        width: 1px;
+    }
+
+    table tr {
+        border-bottom: 3px solid #ddd;
+        display: block;
+        margin-bottom: .625em;
+    }
+
+    table td {
+        border-bottom: 1px solid #ddd;
+        display: block;
+        font-size: .8em;
+        text-align: right;
+    }
+
+    table td::before {
+        /*
+        * aria-label has no advantage, it won't be read inside a table
+        content: attr(aria-label);
+        */
+        content: attr(data-label);
+        float: left;
+        font-weight: bold;
+        text-transform: uppercase;
+    }
+
+    table td:last-child {
+        border-bottom: 0;
+    }
+}
