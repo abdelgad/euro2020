@@ -24,26 +24,23 @@
     <!-- Connection to DB php -->
     <?php // TODO: Seperate js file ?>
     <script type="text/javascript">
-        $(document).ready(function(){
-            var max_fields = 1000;
+        $(document).ready(function()
+        {
             var add_input_button = $('.add_input_button');
             var field_wrapper = $('.field_wrapper');
-            var new_field_html = '<div class="input-group mb-3"><input type="text" class="form-control" name="inputFieldTown[]" value=""/><div class="input-group-append"><button title="Remove field"  class="btn btn-outline-secondary remove_input_button" onclick="javascript:void(0);" type="button">−</button></div></div>';
-            var input_count = 1;
+            var new_field_html = '<div class="input-group mb-3"><input type="text" class="form-control" name="inputFieldTown[]" value="" placeholder="Nom de la ville"/><div class="input-group-append"><button title="Remove field"  class="btn btn-danger remove_input_button" onclick="javascript:void(0);" type="button">−</button></div></div>';
 
             // Add button dynamically
-            $(add_input_button).click(function(){
-                if(input_count < max_fields){
-                    input_count++;
-                    $(field_wrapper).append(new_field_html);
-                }
+            $(add_input_button).click(function()
+            {
+                $(field_wrapper).append(new_field_html);
             });
 
             // Remove dynamically added button
-            $(field_wrapper).on('click', '.remove_input_button', function(e){
+            $(field_wrapper).on('click', '.remove_input_button', function(e)
+            {
                 e.preventDefault();
                 $(this).parent('div').parent().remove();
-                input_count--;
             });
         });
     </script>
@@ -267,7 +264,7 @@ if (isset($_POST['deleteTeamSubmit']))
             <div class="input-group mb-3" id="inputTowns">
                 <input  type="text" class="form-control" placeholder="Nom de la ville" aria-label="Nom de la ville" aria-describedby="basic-addon2" name="inputFieldTown[]"/>
                 <div class="input-group-append">
-                    <button title="Add field"  class="btn btn-outline-secondary add_input_button" onclick="javascript:void(0);" type="button">+</button>
+                    <button title="Add field"  class="btn btn-success add_input_button" onclick="javascript:void(0);" type="button">+</button>
                 </div>
             </div>
         </div>
