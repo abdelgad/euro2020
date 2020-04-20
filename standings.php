@@ -28,6 +28,10 @@
 <body>
 <!-- NAVIGATION BAR -->
 <!-- PHP STATEMENTS -->
+
+
+
+<!--GENERATE MATCHS BUTTON PRESSED-->
 <?php
 if(isset($_POST['generateMatchsButton']))
 {
@@ -53,22 +57,36 @@ if(isset($_POST['generateMatchsButton']))
             else
             {
                 $query = "INSERT INTO Matchs (RefEquipe1, RefEquipe2) values (:team1, :team2);";
-                $prepQuery4 = $connection->prepare($query);
-                $prepQuery4->bindValue('team1', $team1, PDO::PARAM_STR);
-                $prepQuery4->bindValue('team2', $team2, PDO::PARAM_STR);
-                $prepQuery4->execute();
+                $prepQuery = $connection->prepare($query);
+                $prepQuery->bindValue('team1', $team1, PDO::PARAM_STR);
+                $prepQuery->bindValue('team2', $team2, PDO::PARAM_STR);
+                $prepQuery->execute();
             }
         }
     }
-
 }
 ?>
 
 
-
-
-
-
+<!--ENTER THE SCORE OF A MATCH SUBMITTED-->
+<?php
+if(isset($_POST['enterScoreButton']) && isset($_POST['scoreTeam1']) && isset($_POST['scoreTeam2']))
+{
+    if(!empty($_POST['scoreTeam1']) && !empty($_POST['scoreTeam2']))
+    {
+        $query = "UPDATE Matchs SET ScoreEquipe1 = :scoreTeam1, ScoreEquipe2 = :scoreTeam2 WHERE NumMatch = :numMatch;";
+        $prepQuery = $connection->prepare($query);
+        $prepQuery->bindValue('scoreTeam1', $_POST['scoreTeam1'], PDO::PARAM_INT);
+        $prepQuery->bindValue('scoreTeam2', $_POST['scoreTeam2'], PDO::PARAM_INT);
+        $prepQuery->bindValue('numMatch', $_POST['numMatch'], PDO::PARAM_INT);
+        $prepQuery->execute();
+    }
+    else
+    {
+        //TODO: Afficher message remplir tous les champs
+    }
+}
+?>
 
 
 
@@ -265,12 +283,26 @@ if(isset($_POST['generateMatchsButton']))
                                 <li class="list-group-item d-sm-flex justify-content-around align-items-center bg-transparent">
                                     <span><img src="<?php echo "assets/img_upload/".$flagFileNameTeam1; ?>" class="image-parent" alt=""><a class="ml-1"><?php echo $ligneMatch['RefEquipe1']; ?></a></span>
                                     <div>
+
+                                        <?php
+                                        //If the match doesn't have scores
+                                        if (is_null($ligneMatch['ScoreEquipe1']) && is_null($ligneMatch['ScoreEquipe2']))
+                                        {
+                                        ?>
                                         <form class="form-inline" method="post">
                                             <input type="hidden" name="numMatch" value="<?php echo $ligneMatch['NumMatch'] ?>">
                                             <input type="number" name="scoreTeam1" style="width: 3em" class="form-control mr-2" placeholder="X1">
                                             <button type="submit" class="btn btn-primary btn-sm" name="enterScoreButton">Enter</button>
                                             <input type="number" name="scoreTeam2" style="width: 3em" class="form-control ml-2" placeholder="X2">
                                         </form>
+                                        <?php
+                                        }
+                                        //Else, the match has scores, display it
+                                        else
+                                        {
+                                            echo $ligneMatch['ScoreEquipe1'].' - '.$ligneMatch['ScoreEquipe2'];
+                                        }
+                                        ?>
                                     </div>
                                     <span><img src="<?php echo "assets/img_upload/".$flagFileNameTeam2; ?>" class="image-parent" alt=""><a class="ml-1"><?php echo $ligneMatch['RefEquipe2']; ?></a></span>
                                 </li>

@@ -169,7 +169,15 @@ if (isset($_POST['deleteTeamSubmit']))
 {
     $teamToBeDeleted = $_POST['teamName'];
 
-    $query = "delete from Equipes where NomEquipe = :teamName;";
+    //Supprimer les matchs dont l'équipe est participante;
+    $query = "DELETE FROM Matchs WHERE (RefEquipe1 = ? OR RefEquipe2 = ?);";
+    $prepQuery = $connection->prepare($query);
+    $prepQuery->bindValue(1, $teamToBeDeleted, PDO::PARAM_STR);
+    $prepQuery->bindValue(2, $teamToBeDeleted, PDO::PARAM_STR);
+    $prepQuery->execute();
+
+    //Supprimer l'équipe même
+    $query = "DELETE FROM Equipes where NomEquipe = :teamName;";
     $prepQuery = $connection->prepare($query);
     $prepQuery->bindValue('teamName', $teamToBeDeleted, PDO::PARAM_STR);
     $prepQuery->execute();
@@ -299,6 +307,7 @@ if (isset($_POST['deleteTeamSubmit']))
                     <h6 class="text-muted">Equipes</h6>
                     <ul class="list-group teams-list">
 
+
                         <?php
                         $query = "select NomEquipe, NomFichierDrapeau from Equipes where RefGroupe = :letter;";
                         $prepQuery2 = $connection->prepare($query);
@@ -316,10 +325,9 @@ if (isset($_POST['deleteTeamSubmit']))
                         }
                         else
                         {
-
                             while ($ligneEquipe = $prepQuery2->fetch(PDO::FETCH_ASSOC))
                             {
-                                $query = "SELECT * FROM Matchs WHERE RefEquipe1 = ? OR RefEquipe2 = ?;";
+                                $query = "SELECT * FROM Matchs WHERE (RefEquipe1 = ? OR RefEquipe2 = ?) AND (ScoreEquipe1 IS NOT NULL AND ScoreEquipe2 IS NOT NULL);";
                                 $prepQuery3 = $connection->prepare($query);
                                 $prepQuery3->bindValue(1, $ligneEquipe['NomEquipe'], PDO::PARAM_STR);
                                 $prepQuery3->bindValue(2, $ligneEquipe['NomEquipe'], PDO::PARAM_STR);
