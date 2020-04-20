@@ -27,6 +27,59 @@
 
 <body>
 <!-- NAVIGATION BAR -->
+<!-- PHP STATEMENTS -->
+<?php
+if(isset($_POST['generateMatchsButton']))
+{
+    $groupLetter = $_POST['groupLetter'];
+    $query = "select NomEquipe from Equipes where RefGroupe = :letter;";
+    $prepQuery = $connection->prepare($query);
+    $prepQuery->bindValue('letter', $groupLetter, PDO::PARAM_STR);
+    $prepQuery->execute();
+
+    $teams = array();
+    while ($ligneEquipe = $prepQuery->fetch(PDO::FETCH_ASSOC))
+    {
+        $teams[] = $ligneEquipe['NomEquipe'];
+    }
+    foreach ($teams as $key1 => $team1)
+    {
+        foreach ($teams as $key2 => $team2)
+        {
+            if($key2 <= $key1)
+            {
+                continue;
+            }
+            else
+            {
+                $query = "INSERT INTO Matchs (RefEquipe1, RefEquipe2) values (:team1, :team2);";
+                $prepQuery4 = $connection->prepare($query);
+                $prepQuery4->bindValue('team1', $team1, PDO::PARAM_STR);
+                $prepQuery4->bindValue('team2', $team2, PDO::PARAM_STR);
+                $prepQuery4->execute();
+            }
+        }
+    }
+
+}
+?>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
     <div class="container">
         <a class="navbar-brand" href="#">Start Bootstrap</a>
@@ -42,7 +95,7 @@
                     <a class="nav-link" href="groups-teams.php">Groupes & Equipes</a>
                 </li>
                 <li class="nav-item active">
-                    <a class="nav-link" href="#standings.php">Classements<span class="sr-only">(current)</span></a>
+                    <a class="nav-link" href="#">Classements<span class="sr-only">(current)</span></a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#">Contact</a>
@@ -115,7 +168,7 @@
                             <tr>
                                 <?php // TODO: Replace the 1's with the real placement number ?>
                                 <td data-label="No" class="number"><?php echo "1"; ?></td>
-                                <td data-label="Équipe"><div><img class="flag-standings-table" src="<?php echo "assets/img_upload/".$ligneEquipe['NomFichierDrapeau']; ?>"></img><span><?php echo $ligneEquipe['NomEquipe']; ?></span></div></td>
+                                <td data-label="Équipe"><div><img class="flag-standings-table" src="<?php echo "assets/img_upload/".$ligneEquipe['NomFichierDrapeau']; ?>" alt="flag"><span><?php echo $ligneEquipe['NomEquipe']; ?></span></div></td>
                                 <td data-label="J"><?php echo $ligneEquipe['nbMatchJoue']; ?></td>
                                 <td data-label="G"><?php echo $ligneEquipe['nbMatchGagne']; ?></td>
                                 <td data-label="N"><?php echo $ligneEquipe['nbMatchNul']; ?></td>
@@ -141,10 +194,61 @@
                         $prepQuery2->bindValue(2, $ligneGroupe['Lettre'], PDO::PARAM_STR);
                         $prepQuery2->execute();
                         $nbMatchs = $prepQuery2->rowCount();
-                        if ($nbMatchs > 0)
+
+                        if ($nbMatchs > 0) //If the matchs are not generated
                         {
+                            if ($nbMatchs < 6) //If some matchs exist but not all of them, generate the rest
+                            {
+                                //Find the teams with no matchs and add them to an array
+                                $query = "SELECT NomEquipe FROM Equipes WHERE RefGroupe = :letter AND (SELECT COUNT(*) FROM Matchs WHERE Matchs.RefEquipe1 = NomEquipe OR Matchs.RefEquipe2 = NomEquipe) = 0;";
+                                $prepQuery3 = $connection->prepare($query);
+                                $prepQuery3->bindValue('letter', $ligneGroupe['Lettre'], PDO::PARAM_STR);
+                                $prepQuery3->execute();
+                                $teamsWithoutMatchs = array();
+                                while ($ligneEquipe = $prepQuery3->fetch(PDO::FETCH_ASSOC))
+                                {
+                                    $teamsWithoutMatchs[] = $ligneEquipe['NomEquipe'];
+                                }
+
+
+                                //Find the teams to be played against and add them to an array
+                                $query = "SELECT * FROM Equipes WHERE RefGroupe = :letter;";
+                                $prepQuery3 = $connection->prepare($query);
+                                $prepQuery3->bindValue('letter', $ligneGroupe['Lettre'], PDO::PARAM_STR);
+                                $prepQuery3->execute();
+                                $teamsToPlayAgainst = array();
+                                while ($ligneEquipe = $prepQuery3->fetch(PDO::FETCH_ASSOC))
+                                {
+                                    $teamsToPlayAgainst[] = $ligneEquipe['NomEquipe'];
+                                }
+
+
+                                //Create matchs for the new teams with no matchs
+                                foreach ($teamsWithoutMatchs as $team1)
+                                {
+                                    foreach ($teamsToPlayAgainst as $key1 => $team2)
+                                    {
+                                        if ($team1 != $team2)
+                                        {
+                                            $query = "INSERT INTO Matchs (RefEquipe1, RefEquipe2) values (:team1, :team2);";
+                                            $prepQuery3 = $connection->prepare($query);
+                                            $prepQuery3->bindValue('team1', $team1, PDO::PARAM_STR);
+                                            $prepQuery3->bindValue('team2', $team2, PDO::PARAM_STR);
+                                            $prepQuery3->execute();
+                                        }
+                                        else
+                                        {
+                                            unset($teamsToPlayAgainst[$key1]);
+                                        }
+                                    }
+                                }
+                                //Reload the matchs;
+                                $prepQuery2->execute();
+                            }
+                            //Display Matchs
                             echo '<label class="text-muted" for="listOfMatchs">Liste des matchs: </label>';
                             echo '<ul class="list-group" id="listOfMatchs">';
+
                             while ($ligneMatch = $prepQuery2->fetch(PDO::FETCH_ASSOC))
                             {
                                 $query = "SELECT NomFichierDrapeau FROM `Equipes` WHERE Equipes.NomEquipe = :team;";
@@ -159,34 +263,40 @@
                                 $flagFileNameTeam2 = $prepQuery3->fetch(PDO::FETCH_ASSOC)['NomFichierDrapeau'];
                                 ?>
                                 <li class="list-group-item d-sm-flex justify-content-around align-items-center bg-transparent">
-                                    <span><img src="<?php echo "assets/img_upload/".$flagFileNameTeam1; ?>" class="image-parent" alt=""></img><a class="ml-1"><?php echo $ligneMatch['RefEquipe1']; ?></a></span>
-
+                                    <span><img src="<?php echo "assets/img_upload/".$flagFileNameTeam1; ?>" class="image-parent" alt=""><a class="ml-1"><?php echo $ligneMatch['RefEquipe1']; ?></a></span>
                                     <div>
                                         <form class="form-inline" method="post">
-                                            <input type="number" style="width: 3em" class="form-control mr-2" placeholder="X1">
+                                            <input type="hidden" name="numMatch" value="<?php echo $ligneMatch['NumMatch'] ?>">
+                                            <input type="number" name="scoreTeam1" style="width: 3em" class="form-control mr-2" placeholder="X1">
                                             <button type="submit" class="btn btn-primary btn-sm" name="enterScoreButton">Enter</button>
-                                            <input type="number" style="width: 3em" class="form-control ml-2" placeholder="X2">
+                                            <input type="number" name="scoreTeam2" style="width: 3em" class="form-control ml-2" placeholder="X2">
                                         </form>
                                     </div>
-
-                                    <span><img src="<?php echo "assets/img_upload/".$flagFileNameTeam2; ?>" class="image-parent" alt=""></img><a class="ml-1"><?php echo $ligneMatch['RefEquipe2']; ?></a></span>
+                                    <span><img src="<?php echo "assets/img_upload/".$flagFileNameTeam2; ?>" class="image-parent" alt=""><a class="ml-1"><?php echo $ligneMatch['RefEquipe2']; ?></a></span>
                                 </li>
-                                <?php
+                            <?php
                             }
                             ?>
                             </ul>
-                            <?php
+                        <?php
                         }
                         else
-                        {
-                            echo '<div id="generateMatchsButtonWrapper"><button type="button" class="btn btn-primary btn-lg">Génerer la liste des matchs</button></div>';
+                        { //If group has 4 teams but 0 matchs, display the option to generate matchs
+                        ?>
+                            <form method="post">
+                                <input type="hidden" name="groupLetter" value="<?php echo $ligneGroupe['Lettre']; ?>">
+                                <div id="generateMatchsButtonWrapper"><button type="submit" class="btn btn-primary btn-lg" name="generateMatchsButton">Générer la liste des matchs</button></div>
+                            </form>
+                    <?php
                         }
                     }
                     ?>
                 </div>
             </div>
         </div>
-    <?php } ?>
+    <?php
+    }
+    ?>
 </div>
 
 
