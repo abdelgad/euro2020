@@ -23,81 +23,16 @@
 
     <!-- Connection to DB php -->
     <?php require_once 'connection.php'; ?>
+
+    <!-- PHP forms -->
+    <?php require_once 'forms/standings_forms.php';?>
+
+    <?php require_once 'pojos/Team.php';?>
+    <?php require_once 'pojos/Match.php';?>
 </head>
 
 <body>
 <!-- NAVIGATION BAR -->
-<!-- PHP STATEMENTS -->
-
-
-
-<!--GENERATE MATCHS BUTTON PRESSED-->
-<?php
-if(isset($_POST['generateMatchsButton']))
-{
-    $groupLetter = $_POST['groupLetter'];
-    $query = "select NomEquipe from Equipes where RefGroupe = :letter;";
-    $prepQuery = $connection->prepare($query);
-    $prepQuery->bindValue('letter', $groupLetter, PDO::PARAM_STR);
-    $prepQuery->execute();
-
-    $teams = array();
-    while ($ligneEquipe = $prepQuery->fetch(PDO::FETCH_ASSOC))
-    {
-        $teams[] = $ligneEquipe['NomEquipe'];
-    }
-    foreach ($teams as $key1 => $team1)
-    {
-        foreach ($teams as $key2 => $team2)
-        {
-            if($key2 <= $key1)
-            {
-                continue;
-            }
-            else
-            {
-                $query = "INSERT INTO Matchs (RefEquipe1, RefEquipe2) values (:team1, :team2);";
-                $prepQuery = $connection->prepare($query);
-                $prepQuery->bindValue('team1', $team1, PDO::PARAM_STR);
-                $prepQuery->bindValue('team2', $team2, PDO::PARAM_STR);
-                $prepQuery->execute();
-            }
-        }
-    }
-}
-?>
-
-
-<!--ENTER THE SCORE OF A MATCH SUBMITTED-->
-<?php
-if(isset($_POST['enterScoreButton']) && isset($_POST['scoreTeam1']) && isset($_POST['scoreTeam2']))
-{
-    if(!empty($_POST['scoreTeam1']) && !empty($_POST['scoreTeam2']))
-    {
-        $query = "UPDATE Matchs SET ScoreEquipe1 = :scoreTeam1, ScoreEquipe2 = :scoreTeam2 WHERE NumMatch = :numMatch;";
-        $prepQuery = $connection->prepare($query);
-        $prepQuery->bindValue('scoreTeam1', $_POST['scoreTeam1'], PDO::PARAM_INT);
-        $prepQuery->bindValue('scoreTeam2', $_POST['scoreTeam2'], PDO::PARAM_INT);
-        $prepQuery->bindValue('numMatch', $_POST['numMatch'], PDO::PARAM_INT);
-        $prepQuery->execute();
-    }
-    else
-    {
-        //TODO: Afficher message remplir tous les champs
-    }
-}
-?>
-
-
-
-
-
-
-
-
-
-
-
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
     <div class="container">
         <a class="navbar-brand" href="#">Start Bootstrap</a>
@@ -124,18 +59,10 @@ if(isset($_POST['enterScoreButton']) && isset($_POST['scoreTeam1']) && isset($_P
 </nav>
 <!-- END NAVIGATION BAR -->
 
-<!-- Header - set the background image for the header in the line below -->
+<!-- Header -->
 <header class="py-5 bg-image-full" style="background-image: url(assets/img/firstBackground.jpg);">
     <img class="logo-img img-fluid d-block mx-auto" src="assets/img/logo.png" alt="">
 </header>
-
-
-
-
-
-
-
-
 
 
 <?php // TODO: Fix the team name overflow ?>
@@ -147,13 +74,13 @@ if(isset($_POST['enterScoreButton']) && isset($_POST['scoreTeam1']) && isset($_P
     $query = "SELECT * FROM Groupes;";
     $prepQuery = $connection->prepare($query);
     $prepQuery->execute();
+    $groups = $prepQuery->fetchAll(PDO::FETCH_COLUMN, 0);
 
-
-    while ($ligneGroupe = $prepQuery->fetch(PDO::FETCH_ASSOC))
+    foreach($groups as $group)
     {
         ?>
         <div class="group">
-            <?php echo "<h4>Groupe ".$ligneGroupe['Lettre']."</h4>"; ?>
+            <?php echo "<h4>Groupe ".$group."</h4>"; ?>
             <div class="row mb-4">
                 <div class="col">
                     <label class="text-muted" for="standingsOfGroup">Classements du groupe:</label>
@@ -176,25 +103,28 @@ if(isset($_POST['enterScoreButton']) && isset($_POST['scoreTeam1']) && isset($_P
 
                         <?php
                         $query = "SELECT * FROM Equipes WHERE RefGroupe = :letter;";
-                        $prepQuery2 = $connection->prepare($query);
-                        $prepQuery2->bindValue('letter', $ligneGroupe['Lettre'], PDO::PARAM_STR);
-                        $prepQuery2->execute();
-                        $nbTeams = $prepQuery2->rowCount();
-                        while ($ligneEquipe = $prepQuery2->fetch(PDO::FETCH_ASSOC))
+                        $prepQuery = $connection->prepare($query);
+                        $prepQuery->bindValue('letter', $group, PDO::PARAM_STR);
+                        $prepQuery->setFetchMode(PDO::FETCH_CLASS, 'Team');
+                        $prepQuery->execute();
+                        $nbTeams = $prepQuery->rowCount();
+                        $teams = $prepQuery->fetchAll();
+
+                        foreach ($teams as $team)
                         {
                             ?>
                             <tr>
                                 <?php // TODO: Replace the 1's with the real placement number ?>
                                 <td data-label="No" class="number"><?php echo "1"; ?></td>
-                                <td data-label="Équipe"><div><img class="flag-standings-table" src="<?php echo "assets/img_upload/".$ligneEquipe['NomFichierDrapeau']; ?>" alt="flag"><span><?php echo $ligneEquipe['NomEquipe']; ?></span></div></td>
-                                <td data-label="J"><?php echo $ligneEquipe['nbMatchJoue']; ?></td>
-                                <td data-label="G"><?php echo $ligneEquipe['nbMatchGagne']; ?></td>
-                                <td data-label="N"><?php echo $ligneEquipe['nbMatchNul']; ?></td>
-                                <td data-label="P"><?php echo $ligneEquipe['nbMatchPerdu']; ?></td>
-                                <td data-label="Bp"><?php echo $ligneEquipe['nbButMarque']; ?></td>
-                                <td data-label="Bc"><?php echo $ligneEquipe['nbButEnc']; ?></td>
-                                <td data-label="+/-"><?php echo $ligneEquipe['nbButMarque'] - $ligneEquipe['nbButEnc']; ?></td>
-                                <td data-label="PTS"><?php echo $ligneEquipe['nbPoints']; ?></td>
+                                <td data-label="Équipe"><div><img class="flag-standings-table" src="<?php echo "assets/img_upload/".$team->getNomFichierDrapeau(); ?>" alt="flag"><span><?php echo $team->getNomEquipe(); ?></span></div></td>
+                                <td data-label="J"><?php echo $team->getnbMatchJoue(); ?></td>
+                                <td data-label="G"><?php echo $team->getnbMatchGagne(); ?></td>
+                                <td data-label="N"><?php echo $team->getnbMatchNul(); ?></td>
+                                <td data-label="P"><?php echo $team->getnbMatchPerdu(); ?></td>
+                                <td data-label="Bp"><?php echo $team->getnbButMarque(); ?></td>
+                                <td data-label="Bc"><?php echo $team->getnbButEnc(); ?></td>
+                                <td data-label="+/-"><?php echo $team->getnbButMarque() - $team->getnbButEnc(); ?></td>
+                                <td data-label="PTS"><?php echo $team->getnbPoints(); ?></td>
                             </tr>
                         <?php } ?>
                         </tbody>
@@ -206,12 +136,14 @@ if(isset($_POST['enterScoreButton']) && isset($_POST['scoreTeam1']) && isset($_P
                     <?php
                     if ($nbTeams == 4)
                     {
+                        //Get all the matchs related to this group
                         $query = "SELECT * FROM Matchs WHERE Matchs.RefEquipe1 IN (SELECT NomEquipe FROM `Equipes` WHERE Equipes.RefGroupe = ?) OR Matchs.RefEquipe2 IN (SELECT NomEquipe FROM `Equipes` WHERE Equipes.RefGroupe = ?);";
-                        $prepQuery2 = $connection->prepare($query);
-                        $prepQuery2->bindValue(1, $ligneGroupe['Lettre'], PDO::PARAM_STR);
-                        $prepQuery2->bindValue(2, $ligneGroupe['Lettre'], PDO::PARAM_STR);
-                        $prepQuery2->execute();
-                        $nbMatchs = $prepQuery2->rowCount();
+                        $prepQuery = $connection->prepare($query);
+                        $prepQuery->bindValue(1, $group, PDO::PARAM_STR);
+                        $prepQuery->bindValue(2, $group, PDO::PARAM_STR);
+                        $prepQuery->setFetchMode(PDO::FETCH_CLASS, 'Match');
+                        $prepQuery->execute();
+                        $nbMatchs = $prepQuery->rowCount();
 
                         if ($nbMatchs > 0) //If the matchs are not generated
                         {
@@ -219,26 +151,18 @@ if(isset($_POST['enterScoreButton']) && isset($_POST['scoreTeam1']) && isset($_P
                             {
                                 //Find the teams with no matchs and add them to an array
                                 $query = "SELECT NomEquipe FROM Equipes WHERE RefGroupe = :letter AND (SELECT COUNT(*) FROM Matchs WHERE Matchs.RefEquipe1 = NomEquipe OR Matchs.RefEquipe2 = NomEquipe) = 0;";
-                                $prepQuery3 = $connection->prepare($query);
-                                $prepQuery3->bindValue('letter', $ligneGroupe['Lettre'], PDO::PARAM_STR);
-                                $prepQuery3->execute();
-                                $teamsWithoutMatchs = array();
-                                while ($ligneEquipe = $prepQuery3->fetch(PDO::FETCH_ASSOC))
-                                {
-                                    $teamsWithoutMatchs[] = $ligneEquipe['NomEquipe'];
-                                }
+                                $prepQuery2 = $connection->prepare($query);
+                                $prepQuery2->bindValue('letter', $group, PDO::PARAM_STR);
+                                $prepQuery2->execute();
+                                $teamsWithoutMatchs = $prepQuery2->fetchAll(PDO::FETCH_COLUMN, 0);
 
 
                                 //Find the teams to be played against and add them to an array
-                                $query = "SELECT * FROM Equipes WHERE RefGroupe = :letter;";
-                                $prepQuery3 = $connection->prepare($query);
-                                $prepQuery3->bindValue('letter', $ligneGroupe['Lettre'], PDO::PARAM_STR);
-                                $prepQuery3->execute();
-                                $teamsToPlayAgainst = array();
-                                while ($ligneEquipe = $prepQuery3->fetch(PDO::FETCH_ASSOC))
-                                {
-                                    $teamsToPlayAgainst[] = $ligneEquipe['NomEquipe'];
-                                }
+                                $query = "SELECT NomEquipe FROM Equipes WHERE RefGroupe = :letter;";
+                                $prepQuery2 = $connection->prepare($query);
+                                $prepQuery2->bindValue('letter', $group, PDO::PARAM_STR);
+                                $prepQuery2->execute();
+                                $teamsToPlayAgainst = $prepQuery2->fetchAll(PDO::FETCH_COLUMN, 0);
 
 
                                 //Create matchs for the new teams with no matchs
@@ -249,10 +173,10 @@ if(isset($_POST['enterScoreButton']) && isset($_POST['scoreTeam1']) && isset($_P
                                         if ($team1 != $team2)
                                         {
                                             $query = "INSERT INTO Matchs (RefEquipe1, RefEquipe2) values (:team1, :team2);";
-                                            $prepQuery3 = $connection->prepare($query);
-                                            $prepQuery3->bindValue('team1', $team1, PDO::PARAM_STR);
-                                            $prepQuery3->bindValue('team2', $team2, PDO::PARAM_STR);
-                                            $prepQuery3->execute();
+                                            $prepQuery2 = $connection->prepare($query);
+                                            $prepQuery2->bindValue('team1', $team1, PDO::PARAM_STR);
+                                            $prepQuery2->bindValue('team2', $team2, PDO::PARAM_STR);
+                                            $prepQuery2->execute();
                                         }
                                         else
                                         {
@@ -261,36 +185,37 @@ if(isset($_POST['enterScoreButton']) && isset($_POST['scoreTeam1']) && isset($_P
                                     }
                                 }
                                 //Reload the matchs;
-                                $prepQuery2->execute();
+                                $prepQuery->execute();
                             }
                             //Display Matchs
                             echo '<label class="text-muted" for="listOfMatchs">Liste des matchs: </label>';
                             echo '<ul class="list-group" id="listOfMatchs">';
 
-                            while ($ligneMatch = $prepQuery2->fetch(PDO::FETCH_ASSOC))
+                            $matchs = $prepQuery->fetchAll();
+                            foreach ($matchs as $match)
                             {
                                 $query = "SELECT NomFichierDrapeau FROM `Equipes` WHERE Equipes.NomEquipe = :team;";
-                                $prepQuery3 = $connection->prepare($query);
-                                $prepQuery3->bindValue('team', $ligneMatch['RefEquipe1'], PDO::PARAM_STR);
-                                $prepQuery3->execute();
-                                $flagFileNameTeam1 = $prepQuery3->fetch(PDO::FETCH_ASSOC)['NomFichierDrapeau'];
+                                $prepQuery = $connection->prepare($query);
+                                $prepQuery->bindValue('team', $match->getRefEquipe1(), PDO::PARAM_STR);
+                                $prepQuery->execute();
+                                $flagFileNameTeam1 = $prepQuery->fetch(PDO::FETCH_ASSOC)['NomFichierDrapeau'];
 
-                                $prepQuery3 = $connection->prepare($query);
-                                $prepQuery3->bindValue('team', $ligneMatch['RefEquipe2'], PDO::PARAM_STR);
-                                $prepQuery3->execute();
-                                $flagFileNameTeam2 = $prepQuery3->fetch(PDO::FETCH_ASSOC)['NomFichierDrapeau'];
+                                $prepQuery = $connection->prepare($query);
+                                $prepQuery->bindValue('team', $match->getRefEquipe2(), PDO::PARAM_STR);
+                                $prepQuery->execute();
+                                $flagFileNameTeam2 = $prepQuery->fetch(PDO::FETCH_ASSOC)['NomFichierDrapeau'];
                                 ?>
                                 <li class="list-group-item d-sm-flex justify-content-around align-items-center bg-transparent">
-                                    <span><img src="<?php echo "assets/img_upload/".$flagFileNameTeam1; ?>" class="image-parent" alt=""><a class="ml-1"><?php echo $ligneMatch['RefEquipe1']; ?></a></span>
+                                    <span><img src="<?php echo "assets/img_upload/".$flagFileNameTeam1; ?>" class="image-parent" alt=""><a class="ml-1"><?php echo $match->getRefEquipe1(); ?></a></span>
                                     <div>
 
                                         <?php
                                         //If the match doesn't have scores
-                                        if (is_null($ligneMatch['ScoreEquipe1']) && is_null($ligneMatch['ScoreEquipe2']))
+                                        if (is_null($match->getScoreEquipe1()) && is_null($match->getScoreEquipe2()))
                                         {
                                         ?>
                                         <form class="form-inline" method="post">
-                                            <input type="hidden" name="numMatch" value="<?php echo $ligneMatch['NumMatch'] ?>">
+                                            <input type="hidden" name="numMatch" value="<?php echo $match->getNumMatch() ?>">
                                             <input type="number" name="scoreTeam1" style="width: 3em" class="form-control mr-2" placeholder="X1">
                                             <button type="submit" class="btn btn-primary btn-sm" name="enterScoreButton">Enter</button>
                                             <input type="number" name="scoreTeam2" style="width: 3em" class="form-control ml-2" placeholder="X2">
@@ -300,11 +225,11 @@ if(isset($_POST['enterScoreButton']) && isset($_POST['scoreTeam1']) && isset($_P
                                         //Else, the match has scores, display it
                                         else
                                         {
-                                            echo $ligneMatch['ScoreEquipe1'].' - '.$ligneMatch['ScoreEquipe2'];
+                                            echo $match->getScoreEquipe1().' - '.$match->getScoreEquipe2();
                                         }
                                         ?>
                                     </div>
-                                    <span><img src="<?php echo "assets/img_upload/".$flagFileNameTeam2; ?>" class="image-parent" alt=""><a class="ml-1"><?php echo $ligneMatch['RefEquipe2']; ?></a></span>
+                                    <span><img src="<?php echo "assets/img_upload/".$flagFileNameTeam2; ?>" class="image-parent" alt=""><a class="ml-1"><?php echo $match->getRefEquipe2(); ?></a></span>
                                 </li>
                             <?php
                             }
@@ -316,7 +241,7 @@ if(isset($_POST['enterScoreButton']) && isset($_POST['scoreTeam1']) && isset($_P
                         { //If group has 4 teams but 0 matchs, display the option to generate matchs
                         ?>
                             <form method="post">
-                                <input type="hidden" name="groupLetter" value="<?php echo $ligneGroupe['Lettre']; ?>">
+                                <input type="hidden" name="groupLetter" value="<?php echo $group; ?>">
                                 <div id="generateMatchsButtonWrapper"><button type="submit" class="btn btn-primary btn-lg" name="generateMatchsButton">Générer la liste des matchs</button></div>
                             </form>
                     <?php
