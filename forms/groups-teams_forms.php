@@ -1,6 +1,5 @@
 <?php
 
-require_once 'pojos/Team.php';
 
 //ADD GROUP FORM
 if(isset($_POST['submitGroup']) && isset($_POST['selectLetter']) && isset($_POST['inputFieldTown']))

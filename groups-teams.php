@@ -28,10 +28,12 @@
     <!-- Connection to DB php -->
     <?php require_once 'connection.php'; ?>
 
+    <?php require_once 'pojos/Team.php';?>
+
     <!-- PHP forms -->
     <?php require_once 'forms/groups-teams_forms.php';?>
 
-    <?php require_once 'pojos/Team.php';?>
+
 </head>
 
 <body>
