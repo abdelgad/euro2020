@@ -1,6 +1,5 @@
 <?php
 
-
 class Team
 {
     private $NomEquipe;

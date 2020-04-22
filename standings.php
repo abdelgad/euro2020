@@ -280,7 +280,6 @@
     <div class="container">
         <p class="m-0 text-center text-white">Copyright &copy; Abdelrahman et fils</p>
     </div>
-    <!-- /.container -->
 </footer>
 
 </body>

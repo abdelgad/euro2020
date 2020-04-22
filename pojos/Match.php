@@ -1,6 +1,5 @@
 <?php
 
-
 class Match
 {
     private $NumMatch;
@@ -105,9 +104,4 @@ class Match
     {
         $this->ScoreEquipe2 = $ScoreEquipe2;
     }
-
-
-
-
-
 }
