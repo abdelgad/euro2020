@@ -28,21 +28,20 @@
     <!-- Connection to DB php -->
     <?php require_once 'connection.php'; ?>
 
-    <?php require_once 'pojos/Team.php';?>
+    <!-- PHP classes -->
+    <?php require_once 'pojos/Team.php'; ?>
 
     <!-- PHP forms -->
-    <?php require_once 'forms/groups-teams_forms.php';?>
-
-
+    <?php require_once 'forms/groups-teams_forms.php'; ?>
 </head>
 
 <body>
-
 <!-- NAVIGATION BAR -->
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
     <div class="container">
         <a class="navbar-brand" href="#">EURO 2020</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
+                aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarResponsive">
@@ -91,7 +90,7 @@
                 $lettersAvailable = array_diff($allLetters, $groups);
                 foreach ($lettersAvailable as $letter)
                 {
-                    echo "<option value='".$letter."'>".$letter."</option>";
+                    echo "<option value='" . $letter . "'>" . $letter . "</option>";
                 }
                 ?>
             </select>
@@ -99,9 +98,12 @@
         <div class="field_wrapper">
             <label for="inputTowns">Ville(s)</label>
             <div class="input-group mb-3" id="inputTowns">
-                <input  type="text" class="form-control" placeholder="Nom de la ville" aria-label="Nom de la ville" aria-describedby="basic-addon2" name="inputFieldTown[]"/>
+                <input type="text" class="form-control" placeholder="Nom de la ville" aria-label="Nom de la ville"
+                       aria-describedby="basic-addon2" name="inputFieldTown[]"/>
                 <div class="input-group-append">
-                    <button title="Add field"  class="btn btn-success add_input_button" onclick="void(0);" type="button">+</button>
+                    <button title="Add field" class="btn btn-success add_input_button" onclick="void(0);" type="button">
+                        +
+                    </button>
                 </div>
             </div>
         </div>
@@ -110,16 +112,15 @@
 </div>
 
 
-
 <div class="container pt-3 pb-3 border my-3">
     <h2>Liste des groupes:</h2>
 
     <?php
     foreach ($groups as $group)
     {
-    ?>
+        ?>
         <div class="group">
-            <?php echo "<h4>Groupe ".$group."</h4>"; ?>
+            <?php echo "<h4>Groupe " . $group . "</h4>"; ?>
             <div class="row">
                 <div class="col-12 col-sm-8 col-lg-7">
                     <h6 class="text-muted">Equipes</h6>
@@ -140,12 +141,11 @@
                                 Aucune équipe dans ce groupe...
                             </li>
                             <?php
-                        }
-                        else
+                        } else
                         {
                             $teams = $prepQuery->fetchAll();
 
-                            foreach($teams as $team)
+                            foreach ($teams as $team)
                             {
                                 //Get all the matchs that the team already played and finished
                                 $query = "SELECT * FROM Matchs WHERE (RefEquipe1 = ? OR RefEquipe2 = ?) AND (ScoreEquipe1 IS NOT NULL AND ScoreEquipe2 IS NOT NULL);";
@@ -157,14 +157,21 @@
                                 ?>
                                 <li class="list-group-item d-flex justify-content-between align-items-center bg-transparent">
                                     <div class="image-parent">
-                                        <img src="<?php echo "assets/img_upload/".$team->getNomFichierDrapeau(); ?>" class="img-fluid" alt="quixote">
+                                        <img src="<?php echo "assets/img_upload/" . $team->getNomFichierDrapeau(); ?>"
+                                             class="img-fluid" alt="quixote">
                                     </div>
 
                                     <?php echo $team->getNomEquipe(); ?>
 
                                     <form method="POST">
-                                        <input type="hidden" name="teamName" value="<?php echo $team->getNomEquipe(); ?>">
-                                        <button type="submit" class="btn btn-outline-danger btn-sm" name="deleteTeamSubmit" <?php if ($nbMatchs > 0){echo "hidden";} ?>>Supprimer</button>
+                                        <input type="hidden" name="teamName"
+                                               value="<?php echo $team->getNomEquipe(); ?>">
+                                        <button type="submit" class="btn btn-outline-danger btn-sm"
+                                                name="deleteTeamSubmit" <?php if ($nbMatchs > 0)
+                                        {
+                                            echo "hidden";
+                                        } ?>>Supprimer
+                                        </button>
                                     </form>
                                 </li>
                                 <?php
@@ -184,9 +191,9 @@
                         $prepQuery->execute();
                         $towns = $prepQuery->fetchAll(PDO::FETCH_COLUMN, 0);
 
-                        foreach($towns as $town)
+                        foreach ($towns as $town)
                         {
-                            echo "<li class=\"list-group-item d-flex justify-content-center align-items-center bg-transparent\">".$town."</li>";
+                            echo "<li class=\"list-group-item d-flex justify-content-center align-items-center bg-transparent\">" . $town . "</li>";
                         }
                         ?>
                     </ul>
@@ -194,11 +201,15 @@
             </div>
             <div class="row">
                 <div class="col-12 col-sm-8 col-lg-7">
-                    <form method="POST" enctype="multipart/form-data" <?php if($nbTeams == 4){echo "hidden";} ?>>
+                    <form method="POST" enctype="multipart/form-data" <?php if ($nbTeams == 4)
+                    {
+                        echo "hidden";
+                    } ?>>
                         <input type="hidden" name="groupLetter" value="<?php echo $group; ?>">
                         <div class="form-group">
                             <label class="text-muted" for="inputTeamNameID">Ajouter équipe:</label>
-                            <input type="text" class="form-control" id="inputTeamNameID" aria-describedby="teamHelp" placeholder="Nom de l'équipe" name="inputTeamName">
+                            <input type="text" class="form-control" id="inputTeamNameID" aria-describedby="teamHelp"
+                                   placeholder="Nom de l'équipe" name="inputTeamName">
                         </div>
                         <div class="form-group">
                             <label class="text-muted" for="inputFlagFileID">Ajouter le drapeau de l'équipe:</label>

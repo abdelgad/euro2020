@@ -29,16 +29,40 @@ class Team
      */
     public function __construct($NomEquipe = null, $NomFichierDrapeau = null, $RefGroupe = null, $nbMatchJoue = 0, $nbMatchGagne = 0, $nbMatchNul = 0, $nbMatchPerdu = 0, $nbButMarque = 0, $nbButEnc = 0, $nbPoints = 0)
     {
-        if($NomEquipe != NULL) $this->NomEquipe = $NomEquipe;
-        if($NomFichierDrapeau != NULL) $this->NomFichierDrapeau = $NomFichierDrapeau;
-        if($RefGroupe != NULL) $this->RefGroupe = $RefGroupe;
-        $this->nbMatchJoue = $nbMatchJoue;
-        $this->nbMatchGagne = $nbMatchGagne;
-        $this->nbMatchNul = $nbMatchNul;
-        $this->nbMatchPerdu = $nbMatchPerdu;
-        $this->nbButMarque = $nbButMarque;
-        $this->nbButEnc = $nbButEnc;
-        $this->nbPoints = $nbPoints;
+        if ($NomEquipe != NULL) $this->NomEquipe = $NomEquipe;
+        if ($NomFichierDrapeau != NULL) $this->NomFichierDrapeau = $NomFichierDrapeau;
+        if ($RefGroupe != NULL) $this->RefGroupe = $RefGroupe;
+        if ($nbMatchJoue != 0) $this->nbMatchJoue = $nbMatchJoue;
+        if ($nbMatchGagne != 0) $this->nbMatchGagne = $nbMatchGagne;
+        if ($nbMatchNul != 0) $this->nbMatchNul = $nbMatchNul;
+        if ($nbMatchPerdu != 0) $this->nbMatchPerdu = $nbMatchPerdu;
+        if ($nbButMarque != 0) $this->nbButMarque = $nbButMarque;
+        if ($nbButEnc != 0) $this->nbButEnc = $nbButEnc;
+        if ($nbPoints != 0) $this->nbPoints = $nbPoints;
+    }
+
+
+    /**
+     * Fonction pour comparer deux equipes sur base de la priorité nbPoints => différence de buts => nbButMarque
+     * @param $team1 //prémiere équipe à comparer
+     * @param $team2 //deuxième équipe à comparer avec la prémière
+     * @return int -1 si la prèmière équipe est plus petite que la deuxième, 1 si c'est l'inverse, 0 si égaux
+     */
+    static function cmp_obj($team1, $team2)
+    {
+        if ($team1->nbPoints > $team2->nbPoints) return 1;
+        elseif ($team1->nbPoints < $team2->nbPoints) return -1;
+        else
+        {
+            if (($team1->nbButMarque - $team1->nbButEnc) > ($team2->nbButMarque - $team2->nbButEnc)) return 1;
+            elseif (($team1->nbButMarque - $team1->nbButEnc) < ($team2->nbButMarque - $team2->nbButEnc)) return -1;
+            else
+            {
+                if ($team1->nbButMarque > $team2->nbButMarque) return 1;
+                elseif ($team1->nbButMarque < $team2->nbButMarque) return -1;
+                else return 0;
+            }
+        }
     }
 
     /**

@@ -2,12 +2,12 @@
 
 
 //ADD GROUP FORM
-if(isset($_POST['submitGroup']) && isset($_POST['selectLetter']) && isset($_POST['inputFieldTown']))
+if (isset($_POST['submitGroup']) && isset($_POST['selectLetter']) && isset($_POST['inputFieldTown']))
 {
     $selectedLetter = $_POST['selectLetter'];
     $towns = $_POST['inputFieldTown'];
 
-    if(!empty($selectedLetter) && !empty($towns[0]))
+    if (!empty($selectedLetter) && !empty($towns[0]))
     {
         //Add the selected group to the DB
         $query = "insert into GROUPES values (:letter);";
@@ -15,7 +15,7 @@ if(isset($_POST['submitGroup']) && isset($_POST['selectLetter']) && isset($_POST
         $prepQuery->bindValue('letter', $selectedLetter, PDO::PARAM_STR);
         $prepQuery->execute();
 
-        foreach($towns as $town)
+        foreach ($towns as $town)
         {
             //Check if town exists in the DB
             $query = "select * from Villes where NomVille = :town;";
@@ -24,7 +24,7 @@ if(isset($_POST['submitGroup']) && isset($_POST['selectLetter']) && isset($_POST
             $prepQuery->execute();
 
             //If the town doesn't exist, insert it
-            if($prepQuery->rowCount() == 0)
+            if ($prepQuery->rowCount() == 0)
             {
                 $query = "insert into Villes values (:town);";
                 $prepQuery = $connection->prepare($query);
@@ -39,24 +39,22 @@ if(isset($_POST['submitGroup']) && isset($_POST['selectLetter']) && isset($_POST
             $prepQuery->bindValue('town', $town, PDO::PARAM_STR);
             $prepQuery->execute();
         }
-    }
-    else
+    } else
     {
         // TODO: MESSAGE : REMPLISSEZ TOUTS LES CHAMPS
     }
 }
 
 
-
 //ADD TEAM FORM
-if(isset($_POST['teamSubmit'])  && isset($_POST['inputTeamName']) && isset($_FILES['inputFlagFile']))
+if (isset($_POST['teamSubmit']) && isset($_POST['inputTeamName']) && isset($_FILES['inputFlagFile']))
 {
     $myFile = $_FILES['inputFlagFile'];
 
-    if(!empty($myFile['name']) && !empty($_POST['inputTeamName']))
+    if (!empty($myFile['name']) && !empty($_POST['inputTeamName']))
     {
         $fileType = $myFile['type'];
-        if(strtolower($fileType) == 'image/png')
+        if (strtolower($fileType) == 'image/png')
         {
 
 
@@ -65,7 +63,7 @@ if(isset($_POST['teamSubmit'])  && isset($_POST['inputTeamName']) && isset($_FIL
             $prepQuery->bindValue('teamName', $_POST['inputTeamName'], PDO::PARAM_STR);
             $prepQuery->execute();
 
-            if($prepQuery->rowCount() == 0)
+            if ($prepQuery->rowCount() == 0)
             {
                 $teamToBeAdded = new Team($_POST['inputTeamName'], $myFile['name'], $_POST['groupLetter']);
                 //Insert team into DB
@@ -88,28 +86,23 @@ if(isset($_POST['teamSubmit'])  && isset($_POST['inputTeamName']) && isset($_FIL
                 // TODO: Verify if the name of the file isnt already used by another file in the destination folder, if true then add 1 at the end of the file name
                 $newDir = './assets/img_upload/';
                 $tempName = $myFile['tmp_name'];
-                move_uploaded_file($tempName, $newDir.$myFile['name']);
-            }
-            else
+                move_uploaded_file($tempName, $newDir . $myFile['name']);
+            } else
             {
                 echo "EQUIPE EXISTE DEJA";
                 // TODO: Message: L'équipe existe déja BG
             }
-        }
-        else
+        } else
         {
             echo "Fichier pas bon";
             // TODO: Fichier pas bon message
         }
-    }
-    else
+    } else
     {
         echo "remplis tout";
         //TODO: MESSAGE : REMPLIS TOUS LES CHAMPS
     }
 }
-
-
 
 
 //DELETE TEAM FORM

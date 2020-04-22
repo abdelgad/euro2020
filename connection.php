@@ -5,8 +5,7 @@ try
     $connection->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
     $connection->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
     //echo 'Connexion réussie<br/>';
-}
-catch (PDOException $e)
+} catch (PDOException $e)
 {
     //echo 'Erreur connexion : '.$e->getMessage();
     die();

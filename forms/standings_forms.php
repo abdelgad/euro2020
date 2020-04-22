@@ -8,8 +8,30 @@
 //    $prepQuery->bindValue('team1', $team1, PDO::PARAM_STR);
 //}
 
+
+/**
+ * Fonction pour trier (par insertion) un tableau des objets de la classe Team à l'aide de la fonction cmp_obj()
+ * @param $my_array //le tableau à trier
+ * @return mixed //le tableau trié
+ */
+function insertion_Sort($my_array)
+{
+    for ($i = 0; $i < count($my_array); $i++)
+    {
+        $val = $my_array[$i];
+        $j = $i - 1;
+        while ($j >= 0 && Team::cmp_obj($my_array[$j], $val) < 0)
+        {
+            $my_array[$j + 1] = $my_array[$j];
+            $j--;
+        }
+        $my_array[$j + 1] = $val;
+    }
+    return $my_array;
+}
+
 //GENERATE MATCHS BUTTON PRESSED
-if(isset($_POST['generateMatchsButton']))
+if (isset($_POST['generateMatchsButton']))
 {
     $groupLetter = $_POST['groupLetter'];
     $query = "SELECT NomEquipe FROM Equipes WHERE RefGroupe = :letter;";
@@ -23,11 +45,10 @@ if(isset($_POST['generateMatchsButton']))
     {
         foreach ($teams as $key2 => $team2)
         {
-            if($key2 <= $key1)
+            if ($key2 <= $key1)
             {
                 continue;
-            }
-            else
+            } else
             {
                 $query = "INSERT INTO Matchs (RefEquipe1, RefEquipe2) values (:team1, :team2);";
                 $prepQuery = $connection->prepare($query);
@@ -40,11 +61,10 @@ if(isset($_POST['generateMatchsButton']))
 }
 
 
-
 //ENTER THE SCORE OF A MATCH SUBMITTED
-if(isset($_POST['enterScoreButton']) && isset($_POST['scoreTeam1']) && isset($_POST['scoreTeam2']))
+if (isset($_POST['enterScoreButton']) && isset($_POST['scoreTeam1']) && isset($_POST['scoreTeam2']))
 {
-    if(!empty($_POST['scoreTeam1']) && !empty($_POST['scoreTeam2']))
+    if (!empty($_POST['scoreTeam1']) && !empty($_POST['scoreTeam2']))
     {
         $match = new Match();
         $match->setNumMatch($_POST['numMatch']);
@@ -59,8 +79,7 @@ if(isset($_POST['enterScoreButton']) && isset($_POST['scoreTeam1']) && isset($_P
         $prepQuery->execute();
 
 //        update_team_stats($match);
-    }
-    else
+    } else
     {
         //TODO: Afficher message remplir tous les champs
     }

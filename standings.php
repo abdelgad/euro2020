@@ -24,13 +24,12 @@
     <!-- Connection to DB php -->
     <?php require_once 'connection.php'; ?>
 
+    <!-- PHP classes -->
+    <?php require_once 'pojos/Team.php'; ?>
+    <?php require_once 'pojos/Match.php'; ?>
+
     <!-- PHP forms -->
-
-
-    <?php require_once 'pojos/Team.php';?>
-    <?php require_once 'pojos/Match.php';?>
-
-    <?php require_once 'forms/standings_forms.php';?>
+    <?php require_once 'forms/standings_forms.php'; ?>
 </head>
 
 <body>
@@ -38,7 +37,8 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
     <div class="container">
         <a class="navbar-brand" href="#">Start Bootstrap</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
+                aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarResponsive">
@@ -78,11 +78,11 @@
     $prepQuery->execute();
     $groups = $prepQuery->fetchAll(PDO::FETCH_COLUMN, 0);
 
-    foreach($groups as $group)
+    foreach ($groups as $group)
     {
         ?>
         <div class="group">
-            <?php echo "<h4>Groupe ".$group."</h4>"; ?>
+            <?php echo "<h4>Groupe " . $group . "</h4>"; ?>
             <div class="row mb-4">
                 <div class="col">
                     <label class="text-muted" for="standingsOfGroup">Classements du groupe:</label>
@@ -110,15 +110,20 @@
                         $prepQuery->setFetchMode(PDO::FETCH_CLASS, 'Team');
                         $prepQuery->execute();
                         $nbTeams = $prepQuery->rowCount();
-                        $teams = $prepQuery->fetchAll();
+                        $teams = insertion_Sort($prepQuery->fetchAll());
 
                         foreach ($teams as $team)
                         {
                             ?>
                             <tr>
-                                <?php // TODO: Replace the 1's with the real placement number ?>
+                                <?php // TODO: Replace the 1's with the real placement number
+                                ?>
                                 <td data-label="No" class="number"><?php echo "1"; ?></td>
-                                <td data-label="Équipe"><div><img class="flag-standings-table" src="<?php echo "assets/img_upload/".$team->getNomFichierDrapeau(); ?>" alt="flag"><span><?php echo $team->getNomEquipe(); ?></span></div></td>
+                                <td data-label="Équipe">
+                                    <div><img class="flag-standings-table"
+                                              src="<?php echo "assets/img_upload/" . $team->getNomFichierDrapeau(); ?>"
+                                              alt="flag"><span><?php echo $team->getNomEquipe(); ?></span></div>
+                                </td>
                                 <td data-label="J"><?php echo $team->getnbMatchJoue(); ?></td>
                                 <td data-label="G"><?php echo $team->getnbMatchGagne(); ?></td>
                                 <td data-label="N"><?php echo $team->getnbMatchNul(); ?></td>
@@ -179,8 +184,7 @@
                                             $prepQuery2->bindValue('team1', $team1, PDO::PARAM_STR);
                                             $prepQuery2->bindValue('team2', $team2, PDO::PARAM_STR);
                                             $prepQuery2->execute();
-                                        }
-                                        else
+                                        } else
                                         {
                                             unset($teamsToPlayAgainst[$key1]);
                                         }
@@ -208,56 +212,67 @@
                                 $flagFileNameTeam2 = $prepQuery->fetch(PDO::FETCH_ASSOC)['NomFichierDrapeau'];
                                 ?>
                                 <li class="list-group-item d-sm-flex justify-content-around align-items-center bg-transparent">
-                                    <span><img src="<?php echo "assets/img_upload/".$flagFileNameTeam1; ?>" class="image-parent" alt=""><a class="ml-1"><?php echo $match->getRefEquipe1(); ?></a></span>
+                                    <span><img src="<?php echo "assets/img_upload/" . $flagFileNameTeam1; ?>"
+                                               class="image-parent" alt=""><a
+                                                class="ml-1"><?php echo $match->getRefEquipe1(); ?></a></span>
                                     <div>
 
                                         <?php
                                         //If the match doesn't have scores
                                         if (is_null($match->getScoreEquipe1()) && is_null($match->getScoreEquipe2()))
                                         {
-                                        ?>
-                                        <form class="form-inline" method="post">
-                                            <input type="hidden" name="numMatch" value="<?php echo $match->getNumMatch() ?>">
-                                            <input type="number" name="scoreTeam1" style="width: 3em" class="form-control mr-2" placeholder="X1">
-                                            <button type="submit" class="btn btn-primary btn-sm" name="enterScoreButton">Enter</button>
-                                            <input type="number" name="scoreTeam2" style="width: 3em" class="form-control ml-2" placeholder="X2">
-                                        </form>
-                                        <?php
-                                        }
-                                        //Else, the match has scores, display it
+                                            ?>
+                                            <form class="form-inline" method="post">
+                                                <input type="hidden" name="numMatch"
+                                                       value="<?php echo $match->getNumMatch() ?>">
+                                                <input type="number" name="scoreTeam1" style="width: 3em"
+                                                       class="form-control mr-2" placeholder="X1">
+                                                <button type="submit" class="btn btn-primary btn-sm"
+                                                        name="enterScoreButton">Enter
+                                                </button>
+                                                <input type="number" name="scoreTeam2" style="width: 3em"
+                                                       class="form-control ml-2" placeholder="X2">
+                                            </form>
+                                            <?php
+                                        } //Else, the match has scores, display it
                                         else
                                         {
-                                            echo $match->getScoreEquipe1().' - '.$match->getScoreEquipe2();
+                                            echo $match->getScoreEquipe1() . ' - ' . $match->getScoreEquipe2();
                                         }
                                         ?>
                                     </div>
-                                    <span><img src="<?php echo "assets/img_upload/".$flagFileNameTeam2; ?>" class="image-parent" alt=""><a class="ml-1"><?php echo $match->getRefEquipe2(); ?></a></span>
+                                    <span><img src="<?php echo "assets/img_upload/" . $flagFileNameTeam2; ?>"
+                                               class="image-parent" alt=""><a
+                                                class="ml-1"><?php echo $match->getRefEquipe2(); ?></a></span>
                                 </li>
-                            <?php
+                                <?php
                             }
                             ?>
                             </ul>
-                        <?php
-                        }
-                        else
+                            <?php
+                        } else
                         { //If group has 4 teams but 0 matchs, display the option to generate matchs
-                        ?>
+                            ?>
                             <form method="post">
                                 <input type="hidden" name="groupLetter" value="<?php echo $group; ?>">
-                                <div id="generateMatchsButtonWrapper"><button type="submit" class="btn btn-primary btn-lg" name="generateMatchsButton">Générer la liste des matchs</button></div>
+                                <div id="generateMatchsButtonWrapper">
+                                    <button type="submit" class="btn btn-primary btn-lg"
+                                            name="generateMatchsButton">
+                                        Générer la liste des matchs
+                                    </button>
+                                </div>
                             </form>
-                    <?php
+                            <?php
                         }
                     }
                     ?>
                 </div>
             </div>
         </div>
-    <?php
+        <?php
     }
     ?>
 </div>
-
 
 
 <!-- Footer -->
