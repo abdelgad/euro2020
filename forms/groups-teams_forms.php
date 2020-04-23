@@ -92,7 +92,7 @@ if (isset($_POST['teamSubmit']) && isset($_POST['inputTeamName']) && isset($_FIL
             } else
             {
                 $messageForUser = '<div class="alert alert-warning alert-dismissible fade show" role="alert">
-                          L\équipe que vous essayez d\'ajouter existe déjà 
+                          L\'équipe que vous essayez d\'ajouter existe déjà 
                           <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                           </button>
