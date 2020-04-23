@@ -42,7 +42,7 @@ class Team
 
 
     /**
-     * Fonction pour comparer deux equipes sur base de la priorité nbPoints => différence de buts => nbButMarque
+     * Fonction pour comparer deux equipes sur base de la priorité nbPoints ==> différence de buts ==> nbButMarque
      * @param $team1 //prémiere équipe à comparer
      * @param $team2 //deuxième équipe à comparer avec la prémière
      * @return int -1 si la prèmière équipe est plus petite que la deuxième, 1 si c'est l'inverse, 0 si égaux
@@ -61,6 +61,28 @@ class Team
                 elseif ($team1->nbButMarque < $team2->nbButMarque) return -1;
                 else return 0;
             }
+        }
+    }
+
+    function updateStats($scoreThisTeam, $scoreOppositeTeam)
+    {
+        $this->nbMatchJoue++;
+        $this->nbButMarque += $scoreThisTeam;
+        $this->nbButEnc += $scoreOppositeTeam;
+
+        if ($scoreThisTeam > $scoreOppositeTeam)
+        {
+            $this->nbMatchGagne++;
+            $this->nbPoints += 3;
+        }
+        elseif ($scoreThisTeam < $scoreOppositeTeam)
+        {
+            $this->nbMatchPerdu++;
+        }
+        else
+        {
+            $this->nbMatchNul++;
+            $this->nbPoints += 1;
         }
     }
 
