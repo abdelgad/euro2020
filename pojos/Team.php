@@ -31,13 +31,13 @@ class Team
         if ($NomEquipe != NULL) $this->NomEquipe = $NomEquipe;
         if ($NomFichierDrapeau != NULL) $this->NomFichierDrapeau = $NomFichierDrapeau;
         if ($RefGroupe != NULL) $this->RefGroupe = $RefGroupe;
-        if ($nbMatchJoue != 0) $this->nbMatchJoue = $nbMatchJoue;
-        if ($nbMatchGagne != 0) $this->nbMatchGagne = $nbMatchGagne;
-        if ($nbMatchNul != 0) $this->nbMatchNul = $nbMatchNul;
-        if ($nbMatchPerdu != 0) $this->nbMatchPerdu = $nbMatchPerdu;
-        if ($nbButMarque != 0) $this->nbButMarque = $nbButMarque;
-        if ($nbButEnc != 0) $this->nbButEnc = $nbButEnc;
-        if ($nbPoints != 0) $this->nbPoints = $nbPoints;
+        $this->nbMatchJoue = $nbMatchJoue;
+        $this->nbMatchGagne = $nbMatchGagne;
+        $this->nbMatchNul = $nbMatchNul;
+        $this->nbMatchPerdu = $nbMatchPerdu;
+        $this->nbButMarque = $nbButMarque;
+        $this->nbButEnc = $nbButEnc;
+        $this->nbPoints = $nbPoints;
     }
 
 

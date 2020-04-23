@@ -1,6 +1,5 @@
 <?php
 
-
 //ADD GROUP FORM
 if (isset($_POST['submitGroup']) && isset($_POST['selectLetter']) && isset($_POST['inputFieldTown']))
 {
@@ -41,7 +40,12 @@ if (isset($_POST['submitGroup']) && isset($_POST['selectLetter']) && isset($_POS
         }
     } else
     {
-        // TODO: MESSAGE : REMPLISSEZ TOUTS LES CHAMPS
+        $messageForUser = '<div class="alert alert-warning alert-dismissible fade show" role="alert">
+                          Veuillez remplir tous les champs du formulaire afin d\'ajouter un groupe
+                          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                          </button>
+                        </div>';
     }
 }
 
@@ -56,8 +60,6 @@ if (isset($_POST['teamSubmit']) && isset($_POST['inputTeamName']) && isset($_FIL
         $fileType = $myFile['type'];
         if (strtolower($fileType) == 'image/png')
         {
-
-
             $query = "select * from Equipes where NomEquipe = :teamName;";
             $prepQuery = $connection->prepare($query);
             $prepQuery->bindValue('teamName', $_POST['inputTeamName'], PDO::PARAM_STR);
@@ -72,13 +74,13 @@ if (isset($_POST['teamSubmit']) && isset($_POST['inputTeamName']) && isset($_FIL
                 $prepQuery->bindValue(1, $teamToBeAdded->getNomEquipe(), PDO::PARAM_STR);
                 $prepQuery->bindValue(2, $teamToBeAdded->getNomFichierDrapeau(), PDO::PARAM_STR);
                 $prepQuery->bindValue(3, $teamToBeAdded->getRefGroupe(), PDO::PARAM_STR);
-                $prepQuery->bindValue(4, $teamToBeAdded->getNbMatchJoue(), PDO::PARAM_STR);
-                $prepQuery->bindValue(5, $teamToBeAdded->getNbMatchGagne(), PDO::PARAM_STR);
-                $prepQuery->bindValue(6, $teamToBeAdded->getNbMatchNul(), PDO::PARAM_STR);
-                $prepQuery->bindValue(7, $teamToBeAdded->getNbMatchPerdu(), PDO::PARAM_STR);
-                $prepQuery->bindValue(8, $teamToBeAdded->getNbButMarque(), PDO::PARAM_STR);
-                $prepQuery->bindValue(9, $teamToBeAdded->getNbButEnc(), PDO::PARAM_STR);
-                $prepQuery->bindValue(10, $teamToBeAdded->getNbPoints(), PDO::PARAM_STR);
+                $prepQuery->bindValue(4, $teamToBeAdded->getNbMatchJoue(), PDO::PARAM_INT);
+                $prepQuery->bindValue(5, $teamToBeAdded->getNbMatchGagne(), PDO::PARAM_INT);
+                $prepQuery->bindValue(6, $teamToBeAdded->getNbMatchNul(), PDO::PARAM_INT);
+                $prepQuery->bindValue(7, $teamToBeAdded->getNbMatchPerdu(), PDO::PARAM_INT);
+                $prepQuery->bindValue(8, $teamToBeAdded->getNbButMarque(), PDO::PARAM_INT);
+                $prepQuery->bindValue(9, $teamToBeAdded->getNbButEnc(), PDO::PARAM_INT);
+                $prepQuery->bindValue(10, $teamToBeAdded->getNbPoints(), PDO::PARAM_INT);
 
                 $prepQuery->execute();
 
@@ -89,18 +91,30 @@ if (isset($_POST['teamSubmit']) && isset($_POST['inputTeamName']) && isset($_FIL
                 move_uploaded_file($tempName, $newDir . $myFile['name']);
             } else
             {
-                echo "EQUIPE EXISTE DEJA";
-                // TODO: Message: L'équipe existe déja BG
+                $messageForUser = '<div class="alert alert-warning alert-dismissible fade show" role="alert">
+                          L\équipe que vous essayez d\'ajouter existe déjà 
+                          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                          </button>
+                        </div>';
             }
         } else
         {
-            echo "Fichier pas bon";
-            // TODO: Fichier pas bon message
+            $messageForUser = '<div class="alert alert-warning alert-dismissible fade show" role="alert">
+                          Veuillez choisir une image d\'extension png uniquement
+                          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                          </button>
+                        </div>';
         }
     } else
     {
-        echo "remplis tout";
-        //TODO: MESSAGE : REMPLIS TOUS LES CHAMPS
+        $messageForUser = '<div class="alert alert-warning alert-dismissible fade show" role="alert">
+                          Veuillez remplir tous les champs du formulaire afin d\'ajouter une équipe
+                          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                          </button>
+                        </div>';
     }
 }
 

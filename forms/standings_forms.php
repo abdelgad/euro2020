@@ -91,7 +91,12 @@ if (isset($_POST['enterScoreButton']) && isset($_POST['scoreTeam1']) && isset($_
         $prepQuery->execute();
     } else
     {
-        //TODO: Afficher message remplir tous les champs
+        $messageForUser = '<div class="alert alert-warning alert-dismissible fade show" role="alert">
+                          Veuillez remplir tous les champs du formulaire afin d\'ajouter un score
+                          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                          </button>
+                        </div>';
     }
 }
 

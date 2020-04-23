@@ -64,12 +64,17 @@
 </nav>
 <!-- END NAVIGATION BAR -->
 
-
 <!-- Header -->
 <header class="py-5 bg-image-full" style="background-image: url(assets/img/firstBackground.jpg);">
     <img class="logo-img img-fluid d-block mx-auto" src="assets/img/logo.png" alt="">
 </header>
 
+<!--MESSSAGE FOR USER-->
+<div class="d-flex justify-content-center">
+    <div class="col-sm-10">
+        <?php if(isset($messageForUser)) echo $messageForUser;?>
+    </div>
+</div>
 
 <div class="container pt-3 pb-3 border my-3">
     <h2>Ajouter un groupe:</h2>
