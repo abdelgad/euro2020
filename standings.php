@@ -112,13 +112,11 @@
                         $nbTeams = $prepQuery->rowCount();
                         $teams = insertion_Sort($prepQuery->fetchAll());
 
-                        foreach ($teams as $team)
+                        foreach ($teams as $key => $team)
                         {
                             ?>
                             <tr>
-                                <?php // TODO: Replace the 1's with the real placement number
-                                ?>
-                                <td data-label="No" class="number"><?php echo "1"; ?></td>
+                                <td data-label="No" class="number"><?php echo $key+1; ?></td>
                                 <td data-label="Équipe">
                                     <div><img class="flag-standings-table"
                                               src="<?php echo "assets/img_upload/" . $team->getNomFichierDrapeau(); ?>"
