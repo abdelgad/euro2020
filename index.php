@@ -1,13 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="en" dir="ltr">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <title>UEFA EURO 2020</title>
-    <meta name="description" content="">
-    <meta name="author" content="">
 
     <!-- Favicon -->
     <link rel="icon" href="assets/img/favicon.ico" type="image/x-icon"/>
@@ -16,7 +13,11 @@
     <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- CSS style -->
-    <link href="assets/css/style.css?v={random number/string}" rel="stylesheet">
+    <link href="assets/css/style.css" rel="stylesheet">
+
+    <!-- Bootstrap core JavaScript -->
+    <script src="assets/vendor/jquery/jquery.min.js"></script>
+    <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 </head>
 
 <body>
@@ -51,22 +52,48 @@
 <!-- Content section -->
 <section class="py-5">
     <div class="container">
-        <h1>Section Heading</h1>
-        <p class="lead">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
-        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid, suscipit, rerum quos facilis repellat architecto commodi officia atque nemo facere eum non illo voluptatem quae delectus odit vel itaque amet.</p>
+        <h1>EURO 2020 Manager</h1>
+        <p class="lead">Simulez le déroulement de la phase de groupes de l'EURO 2020</p>
+        <p>Grâce à EURO 2020 Manager, vous pouvez simuler votre propre phase de groupes du tournoi EURO 2020, le site vous permet
+        de créer les groupes, ajouter les villes correspondantes, ajouter les équipes ainsi que générer les matchs, vous pouvez aussi encoder les résultats de
+        ces matchs afin d'afficher les classements de chaque groupe.</p>
     </div>
 </section>
 
-<section class="py-5 bg-image-full" style="background-image: url('https://unsplash.it/1900/1080?image=1081');">
+<section class="py-5 bg-image-full" style="background-image: url(assets/img/background2.jpg);">
     <div style="height: 200px;"></div>
 </section>
 
 <!-- Content section -->
 <section class="py-5">
     <div class="container">
-        <h1>Section Heading</h1>
-        <p class="lead">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
-        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid, suscipit, rerum quos facilis repellat architecto commodi officia atque nemo facere eum non illo voluptatem quae delectus odit vel itaque amet.</p>
+        <h1>Déroulement de la compétition</h1>
+        <p class="lead">Comment ça marche?</p>
+        <p>
+            Répartit en quatre ligues, de quatre groupes chacune, les 55 équipes nationales membres de l'UEFA, en fonction de leur Coefficient UEFA.
+            Chacune des quatre ligues se voyant octroyer une place qualificative pour la phase finale.
+        </p>
+        <p>
+            Des matches de barrage entre les équipes vainqueurs des quatre groupes d'une même ligue, déterminent
+            l'attribution de quatre des 24 places qualificatives.
+            Les vingt autres places sont attribuées à l'issue de la phase éliminatoire.
+        </p>
+        <p>
+            Les dix vainqueurs des dix groupes de qualification (cinq groupes de cinq équipes et cinq groupes de six équipes),
+            ainsi que leurs dix dauphins, se voient attribuer une place pour la phase finale.
+        </p>
+        <p>
+            Si l'un des vainqueurs de groupes de la Ligue des Nations s'est déjà qualifié pour la phase finale de l'Euro
+            par le biais des éliminatoires, il sera remplacé par l'équipe suivante la mieux classée dans la même ligue. Dans le cas où, dans une ligue, il y aurait moins de quatre équipes non encore qualifiées pour l'Euro, les places en matches de barrage seront attribuées à l'équipe suivante la mieux classée dans la ligue inférieure.
+        </p>
+        <p>
+            Lors du premier tour s'affronteront six groupes de quatre équipes. Les deux premières de chaque groupe seront
+            qualifiées pour les huitièmes de finale, ainsi que les quatre meilleurs troisièmes.
+        </p>
+        <footer class="blockquote-footer">
+            ‘Championnat d'Europe de football 2021’ (2020) Wikipedia.<br>Disponible sur:<br>
+            <a href="https://fr.wikipedia.org/wiki/Championnat_d%27Europe_de_football_2021">https://fr.wikipedia.org/wiki/Championnat_d%27Europe_de_football_2021</a>
+        </footer>
     </div>
 </section>
 

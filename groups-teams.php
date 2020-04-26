@@ -14,7 +14,7 @@
     <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- CSS style -->
-    <link href="assets/css/style.css?v={random number/string}" rel="stylesheet">
+    <link href="assets/css/style.css" rel="stylesheet">
 
 
     <!-- Bootstrap core JavaScript -->
