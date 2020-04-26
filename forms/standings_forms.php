@@ -34,7 +34,7 @@ if (isset($_POST['generateMatchsButton']))
 //ENTER THE SCORE OF A MATCH SUBMITTED
 if (isset($_POST['enterScoreButton']) && isset($_POST['scoreTeam1']) && isset($_POST['scoreTeam2']))
 {
-    if (!empty($_POST['scoreTeam1']) && !empty($_POST['scoreTeam2']))
+    if (is_numeric($_POST['scoreTeam1']) && is_numeric($_POST['scoreTeam2']))
     {
         $match = new Match();
         $match->setNumMatch($_POST['numMatch']);

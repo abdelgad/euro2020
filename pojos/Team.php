@@ -64,6 +64,12 @@ class Team
         }
     }
 
+
+    /**
+     * Fonction pour mettre à jour les stats d'une équipe selon le score d'un match auquel elle vient de participer
+     * @param $scoreThisTeam  //le score de l'équipe this
+     * @param $scoreOppositeTeam //le score de l'équipe adverse
+     */
     function updateStats($scoreThisTeam, $scoreOppositeTeam)
     {
         $this->nbMatchJoue++;

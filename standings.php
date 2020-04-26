@@ -259,9 +259,13 @@
                             <?php
                         }
                     }
+                    elseif ($nbTeams < 4 && $nbTeams > 0)
+                    {
+                        echo '<p class="text-muted d-flex justify-content-center">Il n\'existe pas assez d\'équipes dans le groupe pour la géneration des matchs</p>';
+                    }
                     else
                     {
-                        echo '<p class="text-muted d-flex justify-content-center">Il n\'existe pas assez d\'équipes dans le groupe pour afficher les classements</p>';
+                        echo '<p class="text-muted d-flex justify-content-center">Il n\'existe pas assez d\'équipes dans le groupe pour afficher les classements et la géneration des matchs</p>';
                     }
                     ?>
                 </div>
