@@ -16,6 +16,8 @@ if (isset($_POST['submitGroup']) && isset($_POST['selectLetter']) && isset($_POS
 
         foreach ($towns as $town)
         {
+            $town = htmlentities(htmlspecialchars(strip_tags($town)));
+
             //Check if town exists in the DB
             $query = "select * from Villes where NomVille = :town;";
             $prepQuery = $connection->prepare($query);
@@ -60,14 +62,15 @@ if (isset($_POST['teamSubmit']) && isset($_POST['inputTeamName']) && isset($_FIL
         $fileType = $myFile['type'];
         if (strtolower($fileType) == 'image/png')
         {
+            $teamName = htmlentities(htmlspecialchars(strip_tags($_POST['inputTeamName'])));
             $query = "select * from Equipes where NomEquipe = :teamName;";
             $prepQuery = $connection->prepare($query);
-            $prepQuery->bindValue('teamName', $_POST['inputTeamName'], PDO::PARAM_STR);
+            $prepQuery->bindValue('teamName', $teamName, PDO::PARAM_STR);
             $prepQuery->execute();
 
             if ($prepQuery->rowCount() == 0)
             {
-                $teamToBeAdded = new Team($_POST['inputTeamName'], $myFile['name'], $_POST['groupLetter']);
+                $teamToBeAdded = new Team($teamName, $myFile['name'], $_POST['groupLetter']);
                 //Insert team into DB
                 $query = "INSERT INTO Equipes VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
                 $prepQuery = $connection->prepare($query);

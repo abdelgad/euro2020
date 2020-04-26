@@ -61,7 +61,7 @@
 </section>
 
 <section class="py-5 bg-image-full" style="background-image: url(assets/img/background2.jpg);">
-    <div style="height: 200px;"></div>
+    <div style="height: 100px;"></div>
 </section>
 
 <!-- Content section -->
@@ -95,6 +95,10 @@
             <a href="https://fr.wikipedia.org/wiki/Championnat_d%27Europe_de_football_2021">https://fr.wikipedia.org/wiki/Championnat_d%27Europe_de_football_2021</a>
         </footer>
     </div>
+</section>
+
+<section class="py-5 bg-image-full" style="background-image: url(assets/img/background3.jpg);">
+    <div style="height: 100px;"></div>
 </section>
 
 <!-- Footer -->
