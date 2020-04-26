@@ -26,30 +26,27 @@
 <!-- Navigation -->
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
     <div class="container">
-        <a class="navbar-brand" href="#">Start Bootstrap</a>
+        <a class="navbar-brand" href="index.php">EURO2020</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarResponsive">
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item active">
-                    <a class="nav-link" href="index.php">Home<span class="sr-only">(current)</span></a>
+                    <a class="nav-link" href="index.php">Accueil<span class="sr-only">(current)</span></a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="groups-teams.php">Groupes & Equipes </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="standings.php">Standings</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Contact</a>
+                    <a class="nav-link" href="standings.php">Classements</a>
                 </li>
             </ul>
         </div>
     </div>
 </nav>
 
-<!-- Header - set the background image for the header in the line below -->
+<!-- Header -->
 <header class="py-5 bg-image-full" style="background-image: url(assets/img/firstBackground.jpg);">
     <img class="logo-img img-fluid d-block mx-auto" src="assets/img/logo.png" alt="">
 </header>
@@ -63,9 +60,8 @@
     </div>
 </section>
 
-<!-- Image Section - set the background image for the header in the line below -->
+
 <section class="py-5 bg-image-full" style="background-image: url('https://unsplash.it/1900/1080?image=1081');">
-    <!-- Put anything you want here! There is just a spacer below for demo purposes! -->
     <div style="height: 200px;"></div>
 </section>
 
@@ -81,14 +77,9 @@
 <!-- Footer -->
 <footer class="py-5 bg-dark">
     <div class="container">
-        <p class="m-0 text-center text-white">Copyright &copy; Your Website 2019</p>
+        <p class="m-0 text-center text-white">Copyright &copy; AbdelGad</p>
     </div>
-    <!-- /.container -->
 </footer>
-
-<!-- Bootstrap core JavaScript -->
-<script src="assets/vendor/jquery/jquery.min.js"></script>
-<script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
 </body>
 

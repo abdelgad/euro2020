@@ -39,7 +39,7 @@
 <!-- NAVIGATION BAR -->
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
     <div class="container">
-        <a class="navbar-brand" href="#">EURO 2020</a>
+        <a class="navbar-brand" href="index.php">EURO2020</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
                 aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -47,16 +47,13 @@
         <div class="collapse navbar-collapse" id="navbarResponsive">
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="index.php">Home</a>
+                    <a class="nav-link" href="index.php">Accueil</a>
                 </li>
                 <li class="nav-item active">
                     <a class="nav-link" href="groups-teams.php">Groupes & Equipes<span class="sr-only">(current)</span></a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="standings.php">Classements</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Contact</a>
                 </li>
             </ul>
         </div>
@@ -83,7 +80,7 @@
         <div class="form-group">
             <label class="my-2 mr-22" for="inlineFormCustomSelectPref">Groupe:</label>
             <select class="custom-select my-1 mr-sm-2" id="inlineFormCustomSelectPref" name="selectLetter">
-                <option disabled selected value>Choose...</option>
+                <option disabled selected value>Choisissez...</option>
                 <?php
                 // TODO: Move this code to Seperate file
                 $allLetters = array('A', 'B', 'C', 'D', 'E', 'F');
@@ -226,7 +223,13 @@
                 </div>
             </div>
         </div>
-    <?php } ?>
+    <?php
+    }
+    if (count($groups) == 0)
+    {
+        echo '<p class="text-muted">Aucun groupe à été ajouté</p>';
+    }
+    ?>
 </div>
 
 <!-- Footer -->
@@ -235,7 +238,6 @@
         <p class="m-0 text-center text-white">Copyright &copy; AbdelGad</p>
     </div>
 </footer>
-
 
 </body>
 

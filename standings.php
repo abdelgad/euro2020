@@ -36,7 +36,7 @@
 <!-- NAVIGATION BAR -->
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
     <div class="container">
-        <a class="navbar-brand" href="#">Start Bootstrap</a>
+        <a class="navbar-brand" href="index.php">EURO2020</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
                 aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -44,16 +44,13 @@
         <div class="collapse navbar-collapse" id="navbarResponsive">
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="index.php">Home</a>
+                    <a class="nav-link" href="index.php">Accueil</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="groups-teams.php">Groupes & Equipes</a>
                 </li>
                 <li class="nav-item active">
                     <a class="nav-link" href="#">Classements<span class="sr-only">(current)</span></a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Contact</a>
                 </li>
             </ul>
         </div>
@@ -226,7 +223,7 @@
                                                 <input type="number" name="scoreTeam1" style="width: 3em"
                                                        class="form-control mr-2" placeholder="X1">
                                                 <button type="submit" class="btn btn-primary btn-sm"
-                                                        name="enterScoreButton">Enter
+                                                        name="enterScoreButton">Entrez
                                                 </button>
                                                 <input type="number" name="scoreTeam2" style="width: 3em"
                                                        class="form-control ml-2" placeholder="X2">
@@ -246,7 +243,6 @@
                                 <?php
                             }
                             ?>
-                            </ul>
                             <?php
                         } else
                         { //If group has 4 teams but 0 matchs, display the option to generate matchs
@@ -263,20 +259,27 @@
                             <?php
                         }
                     }
+                    else
+                    {
+                        echo '<p class="text-muted d-flex justify-content-center">Il n\'existe pas assez d\'équipes dans le groupe pour afficher les classements</p>';
+                    }
                     ?>
                 </div>
             </div>
         </div>
         <?php
     }
+    if (count($groups) == 0)
+    {
+        echo '<p class="text-muted">Aucun groupe à été ajouté</p>';
+    }
     ?>
 </div>
-
 
 <!-- Footer -->
 <footer class="py-5 bg-dark">
     <div class="container">
-        <p class="m-0 text-center text-white">Copyright &copy; Abdelrahman et fils</p>
+        <p class="m-0 text-center text-white">Copyright &copy; AbdelGad</p>
     </div>
 </footer>
 
