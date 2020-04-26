@@ -5,13 +5,13 @@ class Team
     private $NomEquipe;
     private $NomFichierDrapeau;
     private $RefGroupe;
-    private $nbMatchJoue;
-    private $nbMatchGagne;
-    private $nbMatchNul;
-    private $nbMatchPerdu;
-    private $nbButMarque;
-    private $nbButEnc;
-    private $nbPoints;
+    private $nbMatchJoue = 0;
+    private $nbMatchGagne = 0;
+    private $nbMatchNul = 0;
+    private $nbMatchPerdu = 0;
+    private $nbButMarque = 0;
+    private $nbButEnc = 0;
+    private $nbPoints = 0;
 
     /**
      * Team constructor.
@@ -26,18 +26,18 @@ class Team
      * @param $nbButEnc
      * @param $nbPoints
      */
-    public function __construct($NomEquipe = null, $NomFichierDrapeau = null, $RefGroupe = null, $nbMatchJoue = 0, $nbMatchGagne = 0, $nbMatchNul = 0, $nbMatchPerdu = 0, $nbButMarque = 0, $nbButEnc = 0, $nbPoints = 0)
+    public function __construct($NomEquipe = null, $NomFichierDrapeau = null, $RefGroupe = null, $nbMatchJoue = null, $nbMatchGagne = null, $nbMatchNul = null, $nbMatchPerdu = null, $nbButMarque = null, $nbButEnc = null, $nbPoints = null)
     {
         if ($NomEquipe != NULL) $this->NomEquipe = $NomEquipe;
         if ($NomFichierDrapeau != NULL) $this->NomFichierDrapeau = $NomFichierDrapeau;
         if ($RefGroupe != NULL) $this->RefGroupe = $RefGroupe;
-        if ($nbMatchJoue != 0) $this->nbMatchJoue = $nbMatchJoue;
-        if ($nbMatchGagne != 0) $this->nbMatchGagne = $nbMatchGagne;
-        if ($nbMatchNul != 0) $this->nbMatchNul = $nbMatchNul;
-        if ($nbMatchPerdu != 0) $this->nbMatchPerdu = $nbMatchPerdu;
-        if ($nbButMarque != 0) $this->nbButMarque = $nbButMarque;
-        if ($nbButEnc != 0) $this->nbButEnc = $nbButEnc;
-        if ($nbPoints != 0) $this->nbPoints = $nbPoints;
+        if ($nbMatchJoue != NULL) $this->nbMatchJoue = $nbMatchJoue;
+        if ($nbMatchGagne != NULL) $this->nbMatchGagne = $nbMatchGagne;
+        if ($nbMatchNul != NULL) $this->nbMatchNul = $nbMatchNul;
+        if ($nbMatchPerdu != NULL) $this->nbMatchPerdu = $nbMatchPerdu;
+        if ($nbButMarque != NULL) $this->nbButMarque = $nbButMarque;
+        if ($nbButEnc != NULL) $this->nbButEnc = $nbButEnc;
+        if ($nbPoints != NULL) $this->nbPoints = $nbPoints;
     }
 
 
@@ -64,6 +64,12 @@ class Team
         }
     }
 
+
+    /**
+     * Fonction pour mettre à jour les stats d'une équipe selon le score d'un match auquel elle vient de participer
+     * @param $scoreThisTeam  //le score de l'équipe this
+     * @param $scoreOppositeTeam //le score de l'équipe adverse
+     */
     function updateStats($scoreThisTeam, $scoreOppositeTeam)
     {
         $this->nbMatchJoue++;
