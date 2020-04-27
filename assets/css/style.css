@@ -123,6 +123,16 @@ table th {
 
 }
 
+#teamColTH
+{
+    text-align: left;
+}
+
+#teamColTD
+{
+    text-align: left;
+}
+
 @media screen and (max-width: 600px) {
     table {
         border: 0;
@@ -170,4 +180,10 @@ table th {
     table td:last-child {
         border-bottom: 0;
     }
+
+    #teamColTD
+    {
+        text-align: right;
+    }
+
 }

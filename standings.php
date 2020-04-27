@@ -87,7 +87,7 @@
                         <thead>
                         <tr>
                             <th scope="col">No</th>
-                            <th scope="col">Équipe</th>
+                            <th scope="col" id="teamColTH">Équipe</th>
                             <th scope="col">J</th>
                             <th scope="col">G</th>
                             <th scope="col">N</th>
@@ -114,7 +114,7 @@
                             ?>
                             <tr>
                                 <td data-label="No" class="number"><?php echo $key+1; ?></td>
-                                <td data-label="Équipe">
+                                <td data-label="Équipe" id="teamColTD">
                                     <div><img class="flag-standings-table"
                                               src="<?php echo "assets/img_upload/" . $team->getNomFichierDrapeau(); ?>"
                                               alt="flag"><span><?php echo $team->getNomEquipe(); ?></span></div>
