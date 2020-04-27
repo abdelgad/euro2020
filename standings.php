@@ -206,7 +206,7 @@
                                 $prepQuery->execute();
                                 $flagFileNameTeam2 = $prepQuery->fetch(PDO::FETCH_ASSOC)['NomFichierDrapeau'];
                                 ?>
-                                <li class="list-group-item d-sm-flex justify-content-around align-items-center bg-transparent">
+                                <li class="list-group-item d-sm-flex justify-content-between align-items-center bg-transparent">
                                     <span><img src="<?php echo "assets/img_upload/" . $flagFileNameTeam1; ?>"
                                                class="image-parent" alt=""><a
                                                 class="ml-1"><?php echo $match->getRefEquipe1(); ?></a></span>
