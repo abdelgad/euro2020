@@ -50,7 +50,7 @@
                     <a class="nav-link" href="index.php">Accueil</a>
                 </li>
                 <li class="nav-item active">
-                    <a class="nav-link" href="groups-teams.php">Groupes & Equipes<span class="sr-only">(current)</span></a>
+                    <a class="nav-link" href="groups-teams.php">Groupes & Équipes<span class="sr-only">(current)</span></a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="standings.php">Classements</a>

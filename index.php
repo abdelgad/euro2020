@@ -34,7 +34,7 @@
                     <a class="nav-link" href="index.php">Accueil<span class="sr-only">(current)</span></a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="groups-teams.php">Groupes & Equipes </a>
+                    <a class="nav-link" href="groups-teams.php">Groupes & Équipes </a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="standings.php">Classements</a>
