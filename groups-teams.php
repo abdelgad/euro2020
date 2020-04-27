@@ -29,7 +29,7 @@
     <?php require_once 'connection.php'; ?>
 
     <!-- PHP classes -->
-    <?php require_once 'pojos/Team.php'; ?>
+    <?php require_once 'classes/Team.php'; ?>
 
     <!-- PHP forms -->
     <?php require_once 'forms/groups-teams_forms.php'; ?>
