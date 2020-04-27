@@ -158,12 +158,11 @@
                                 $nbMatchs = $prepQuery->rowCount();
                                 ?>
                                 <li class="list-group-item d-flex justify-content-between align-items-center bg-transparent">
-                                    <div class="image-parent">
+                                    <div class="image-parent d-flex align-content-between">
                                         <img src="<?php echo "assets/img_upload/" . $team->getNomFichierDrapeau(); ?>"
-                                             class="img-fluid" alt="quixote">
+                                             class="img-fluid mr-2" alt="quixote">
+                                        <?php echo $team->getNomEquipe(); ?>
                                     </div>
-
-                                    <?php echo $team->getNomEquipe(); ?>
 
                                     <form method="POST">
                                         <input type="hidden" name="teamName"
