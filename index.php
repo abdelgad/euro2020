@@ -92,7 +92,7 @@
         </p>
         <footer class="blockquote-footer">
             ‘Championnat d'Europe de football 2021’ (2020) Wikipedia.<br>Disponible sur:<br>
-            <a href="https://fr.wikipedia.org/wiki/Championnat_d%27Europe_de_football_2021">https://fr.wikipedia.org/wiki/Championnat_d%27Europe_de_football_2021</a>
+            <a href="https://fr.wikipedia.org/wiki/Championnat_d%27Europe_de_football_2021">https://fr.wikipedia.org/wiki/<br>Championnat_d%27Europe_de_football_2021</a>
         </footer>
     </div>
 </section>
